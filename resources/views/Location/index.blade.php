@@ -86,19 +86,17 @@
                 var cityid = $('#cityid').val();
                 var areaid = $('#areaid').val();
 
-                console.log(countryid, cityid, areaid);
-
                 $.ajax({
                     url: "{{route('add.location')}}",
                     method: "post",
                     data: {
+                        _token:"{{ csrf_token() }}",
                         countryid: countryid,
                         cityid: cityid,
                         areaid: areaid
                     },
                     success: function(result) {
-                        $('#message').append('<div class="alert alert-success">Successfully Submitted</div>');
-
+                        $('#message').append('<div class="alert alert-success">'+ result.success +'</div>');
                     }
                 });
             }

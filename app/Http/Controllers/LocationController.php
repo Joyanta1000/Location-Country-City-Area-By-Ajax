@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Area;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Location;
 use Illuminate\Http\Request;
 
 class LocationController extends Controller
@@ -35,7 +36,17 @@ class LocationController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $location = Location::create([
+            'countryid' => $request->countryid,
+            'cityid' => $request->cityid,
+            'areaid' => $request->areaid,
+        ]);
+        if ($location) {
+            return response()->json(['success' => 'Location Added Successfully']);
+        }
+        else{
+            return response()->json(['error' => 'Something went wrong']);
+        }
     }
 
     public function show($id)
