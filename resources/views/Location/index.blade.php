@@ -10,8 +10,9 @@
 </head>
 
 <body>
+    <div id="message" class=""></div>
     <div style="padding: 20px;">
-        <select class="select-country form-control" name="countryid" aria-label="Select country">
+        <select class="select-country form-control" id="countryid" name="countryid" aria-label="Select country">
             <option selected>Open this select menu</option>
             @foreach ($countries as $country)
             <option value="{{$country->id}}">{{$country->CountryName}}</option>
@@ -20,17 +21,19 @@
     </div>
 
     <div style="padding: 20px;" id="city">
-        <select class="select-city form-control" name="cityid" aria-label="Select city">
+        <select class="select-city form-control" id="cityid" name="cityid" aria-label="Select city">
 
         </select>
     </div>
 
     <div style="padding: 20px;" id="area">
-        <select class="select-area form-control" name="area" aria-label="Select area">
+        <select class="select-area form-control" id="areaid" name="area" aria-label="Select area">
 
         </select>
     </div>
-
+    <div style="padding: 20px;">
+        <button type="submit" class="btn btn-primary" name="submit" value="Submit" > Submit </button>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
@@ -74,6 +77,32 @@
                     }
                 });
             });
+
+            const btn = document.querySelector("button");
+            btn.addEventListener("click", submitData);
+
+            function submitData() {
+                var countryid = $('#countryid').val();
+                var cityid = $('#cityid').val();
+                var areaid = $('#areaid').val();
+
+                console.log(countryid, cityid, areaid);
+
+                $.ajax({
+                    url: "{{route('add.location')}}",
+                    method: "post",
+                    data: {
+                        countryid: countryid,
+                        cityid: cityid,
+                        areaid: areaid
+                    },
+                    success: function(result) {
+                        $('#message').append('<div class="alert alert-success">Successfully Submitted</div>');
+
+                    }
+                });
+            }
+
         });
     </script>
 </body>
