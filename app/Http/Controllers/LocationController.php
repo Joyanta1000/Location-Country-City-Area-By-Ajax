@@ -14,7 +14,17 @@ class LocationController extends Controller
     public function index()
     {
         $countries = Country::has('city')->get();
-        return view('Location.index', compact('countries'));
+        $cntry = Country::has('city')->get();
+        $cty = City::has('area')->get();
+        $areas = Area::all();
+        return view('Location.index', compact('countries', 'cntry', 'cty', 'areas'));
+    }
+
+    public function show(){
+        $cntry = Country::has('city')->get();
+        $cty = City::has('area')->get();
+        $areas = Area::all();
+        return response()->json(['cntry' => $cntry, 'cty' => $cty, 'areas' => $areas]);
     }
 
     public function city(City $city)
@@ -47,11 +57,6 @@ class LocationController extends Controller
         else{
             return response()->json(['error' => 'Something went wrong']);
         }
-    }
-
-    public function show($id)
-    {
-        //
     }
 
     public function edit($id)

@@ -32,11 +32,33 @@
         </select>
     </div>
     <div style="padding: 20px;">
-        <button type="submit" class="btn btn-primary" name="submit" value="Submit" > Submit </button>
+        <button type="submit" class="btn btn-primary" name="submit" value="Submit"> Submit </button>
     </div>
+
+    <div style="padding: 20px;">
+        <select class="form-control" id="cntryid" name="countryid" multiple aria-label="multiple select example" opened>
+
+        </select>
+    </div>
+
+    <div style="padding: 20px;">
+        <select class="form-control" id="ctyid" name="ctyid" multiple aria-label="multiple select example" opened>
+
+        </select>
+    </div>
+
+    <div style="padding: 20px;">
+        <select class="area form-control" id="areaid" name="areaid" multiple aria-label="multiple select example" opened>
+
+        </select>
+    </div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
+
+        var a = '{{count($countries)}}';
+        console.log(a);
         $(document).ready(function() {
             citySelect = '<option selected>Open this select menu</option>';
             areaSelect = '<option selected>Open this select menu</option>';
@@ -90,15 +112,50 @@
                     url: "{{route('add.location')}}",
                     method: "post",
                     data: {
-                        _token:"{{ csrf_token() }}",
+                        _token: "{{ csrf_token() }}",
                         countryid: countryid,
                         cityid: cityid,
                         areaid: areaid
                     },
                     success: function(result) {
-                        $('#message').append('<div class="alert alert-success">'+ result.success +'</div>');
+                        $('#message').append('<div class="alert alert-success">' + result.success + '</div>');
                     }
                 });
+            }
+            let cntry = [];
+            let cty = [];
+            let areas = [];
+            $.ajax({
+                url: "{{route('Location.show')}}",
+                method: "get",
+                success: function(result) {
+                    console.log(result.cntry);
+                    cntry = result.cntry;
+                    cty = result.cty;
+                    areas = result.areas;
+                    location(cntry, cty, areas);
+                }
+            });
+
+            function location() {
+
+                // $.each(cntry, function(key, value) {
+                //     $('#cntryid').append('<option value="' + value.id + '">' + value.CountryName + '</option>');
+                // });
+                
+                // $.each(cty, function(key, value) {
+                //     $('#ctyid').append('<option value="' + value.id + '">' + value.CityName + '</option>');
+                // });
+    
+                // $.each(areas, function(key, value) {
+                //     $('.area').append('<option value="' + value.id + '">' + value.AreaName + '</option>');
+                // });
+            }
+            var cc = '{{count($cntry)}}';
+            var c = '{{$cntry}}';
+            for (let i = 0; i < cc; i++) {
+                console.log(i);
+                $('#cntryid').append('<option value="' + '{{$cntry[0]->id}}' + '">' + '{{$cntry[0]->CountryName}}' + '</option>');
             }
 
         });
