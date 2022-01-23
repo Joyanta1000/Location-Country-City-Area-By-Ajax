@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
-<body>
+<body class="container">
     <div id="message" class=""></div>
     <div style="padding: 20px;">
         <select class="select-country form-control" id="countryid" name="countryid" aria-label="Select country">
@@ -42,12 +42,18 @@
     </div>
 
     <div style="padding: 20px;">
+        <button class="btn btn-primary cty" id="" onclick="return $('#ctyid').toggle();" value="">View City</button>
+        <br>
+        <br>
         <select class="form-control" id="ctyid" name="ctyid" multiple aria-label="multiple select example" opened>
 
         </select>
     </div>
 
     <div style="padding: 20px;">
+        <button class="btn btn-primary" id="area" onclick="return $('.area').toggle();">View Area</button>
+        <br>
+        <br>
         <select class="area form-control" id="areaid" name="areaid" multiple aria-label="multiple select example" opened>
 
         </select>
@@ -57,11 +63,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
 
-        var a = '{{count($countries)}}';
-        console.log(a);
         $(document).ready(function() {
+
+            $('#ctyid').hide();
+            $('.area').hide();
+
             citySelect = '<option selected>Open this select menu</option>';
             areaSelect = '<option selected>Open this select menu</option>';
+
             $('.select-country').change(function() {
                 var countryid = $(this).val();
                 $('.select-city').html('');
@@ -129,7 +138,6 @@
                 url: "{{route('Location.show')}}",
                 method: "get",
                 success: function(result) {
-                    console.log(result.cntry);
                     cntry = result.cntry;
                     cty = result.cty;
                     areas = result.areas;
@@ -137,25 +145,46 @@
                 }
             });
 
-            function location() {
+            $('#cntryid').change(function() {
+                $('#ctyid').empty();
+                changeCity(cntryid = $('#cntryid').val());
+            });
 
-                // $.each(cntry, function(key, value) {
-                //     $('#cntryid').append('<option value="' + value.id + '">' + value.CountryName + '</option>');
-                // });
-                
-                // $.each(cty, function(key, value) {
-                //     $('#ctyid').append('<option value="' + value.id + '">' + value.CityName + '</option>');
-                // });
-    
-                // $.each(areas, function(key, value) {
-                //     $('.area').append('<option value="' + value.id + '">' + value.AreaName + '</option>');
-                // });
+            $('#ctyid').change(function() {
+                $('.area').empty();
+                changeArea($('#ctyid').val());
+            });
+
+            $('#areaid').change(function() {
+
+            });
+
+            function location() {
+                $.each(cntry, function(key, value) {
+                    $('#cntryid').append('<option value="' + value.id + '" >' + value.CountryName + '</option>');
+                });
+                $.each(cty, function(key, value) {
+                    $('#ctyid').append('<option value="' + value.id + '">' + value.CityName + '</option>');
+                });
+                $.each(areas, function(key, value) {
+                    $('.area').append('<option value="' + value.id + '">' + value.AreaName + '</option>');
+                });
             }
-            var cc = '{{count($cntry)}}';
-            var c = '{{$cntry}}';
-            for (let i = 0; i < cc; i++) {
-                console.log(i);
-                $('#cntryid').append('<option value="' + '{{$cntry[0]->id}}' + '">' + '{{$cntry[0]->CountryName}}' + '</option>');
+
+            function changeCity(cntryid) {
+                $.each(cty, function(key, value) {
+                    if (value.countryid == cntryid) {
+                        $('#ctyid').append('<option value="' + value.id + '">' + value.CityName + '</option>');
+                    }
+                });
+            }
+
+            function changeArea(ctyid) {
+                $.each(areas, function(key, value) {
+                    if (value.cityid == ctyid) {
+                        $('.area').append('<option value="' + value.id + '">' + value.AreaName + '</option>');
+                    }
+                });
             }
 
         });
