@@ -18,8 +18,8 @@ class CreateAreasTable extends Migration
             $table->unsignedBigInteger('cityid')->nullable();
             $table->foreign('cityid')->references('id')->on('cities')->onDelete('cascade')->onUpdate('cascade');
             $table->string('AreaName', 250)->collation('utf8mb4_unicode_ci')->nullable();
-            $table->double('latitude',8,2);
-            $table->double('longitude',8,2);
+            $table->double('latitude',8,2)->nullable();
+            $table->double('longitude',8,2)->nullable();
             $table->timestamps();
         });
     }
