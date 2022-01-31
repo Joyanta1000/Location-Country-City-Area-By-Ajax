@@ -14,7 +14,7 @@ class CreateCitiesTable extends Migration
     public function up()
     {
         Schema::create('cities', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('countryid')->nullable();
             $table->foreign('countryid', 10)->references('id')->on('countries')->onDelete('cascade')->onUpdate('cascade');
             $table->string('CityName', 100)->collation('utf8mb4_unicode_ci');

@@ -14,7 +14,7 @@ class CreateAreasTable extends Migration
     public function up()
     {
         Schema::create('areas', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('cityid')->nullable();
             $table->foreign('cityid')->references('id')->on('cities')->onDelete('cascade')->onUpdate('cascade');
             $table->string('AreaName', 250)->collation('utf8mb4_unicode_ci')->nullable();

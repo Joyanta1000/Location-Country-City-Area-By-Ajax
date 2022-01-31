@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        ini_set('memory_limit', '20000M'); 
         \App\Models\User::factory(10)->create();
         \App\Models\Country::factory(100)->create();
         \App\Models\City::factory()
@@ -23,14 +24,14 @@ class DatabaseSeeder extends Seeder
             ->state(new Sequence(
                 fn ($sequence) => ['countryid' => Country::all()->random()],
             ))
-            ->count(100*100)
+            ->count(10000)
             ->create();
         \App\Models\Area::factory()
             ->has(\App\Models\City::factory()->count(1), 'city')
             ->state(new Sequence(
                 fn ($sequence) => ['cityid' => City::all()->random()],
             ))
-            ->count(100*100*100)
+            ->count(10000*10000)
             ->create();
     }
 }
